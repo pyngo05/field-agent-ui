@@ -57,11 +57,16 @@ function App() {
 
         break;
       case "delete":
-        api.delete(agentId).then(() => {
-          setAgents((prevAgents) =>
-            prevAgents.filter((agent) => agent.agentId !== agentId)
-          );
-        });
+        api
+          .delete(agentId)
+          .then(() => {
+            setAgents((prevAgents) =>
+              prevAgents.filter((agent) => agent.agentId !== agentId)
+            );
+          })
+          .catch((err) => {
+            console.error("Some other error.", err);
+          });
 
         break;
       default:
@@ -81,20 +86,22 @@ function App() {
       if (id2Edit) {
         // We are updating
         api
-          .update({ id: id2Edit, description: agent })
+          .update(agent)
           .then(() => {
+            console.log(agent);
             setAgents((prevAgents) =>
-              prevAgents.map((agent) => {
-                if (agent.id === id2Edit) {
+              prevAgents.map((existingAgent) => {
+                console.log(id2Edit);
+                if (existingAgent.agentId === id2Edit) {
                   // Avoid mutating the original agent object
                   // We create a new object by spreading out the original (...agent)
                   // We compose the new object with the updated properties
                   // `inputValue` is piece of state
-                  const updatedAgent = { ...agent, description: agents };
-                  return updatedAgent;
+
+                  return agent;
                 }
 
-                return agent;
+                return existingAgent;
               })
             );
             // ⚠️ Don't get stuck in edit mode!

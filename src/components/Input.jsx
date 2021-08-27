@@ -4,9 +4,9 @@ import React from "react";
 function Input({ changeHandler, value, label, name }) {
   return (
     <div>
-      <label htmlFor="add-agent">{label}: </label>
+      <label htmlFor={name}>{label}: </label>
       <input
-        id="add-agent"
+        id={name}
         type="text"
         onChange={changeHandler}
         value={value}

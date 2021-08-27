@@ -32,7 +32,7 @@ export default {
 
   // TODO: Handle errors with Promise.reject()
   async update(payload) {
-    const response = await fetch(`${BASE_URL}/${payload.id}`, {
+    const response = await fetch(`${BASE_URL}/${payload.agentId}`, {
       method: "PUT",
       headers: HEADERS,
       body: JSON.stringify(payload),
@@ -41,12 +41,14 @@ export default {
     if (response.status >= 400) {
       return Promise.reject();
     }
-
-    return response.json();
   },
-  delete(id) {
-    return fetch(`${BASE_URL}/${id}`, {
+  async delete(id) {
+    const response = await fetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
     });
+
+    if (response.status >= 400) {
+      return Promise.reject();
+    }
   },
 };
